@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace FlightsSystem.Core.DAL
 {
-    public interface IFlightDAO
+    public interface IFlightDAO : IBasicDB<Flight>
     {
-        IList<Flight> GetAllFlightsVacancy();
+        Dictionary<Flight, int> GetAllFlightsVacancy();
         Flight GetFlightById(int id);
         IList<Flight> GetFlightsByCustomer(Customer customer);
         IList<Flight> GetFlightsByDepartureDate(DateTime departureDate);

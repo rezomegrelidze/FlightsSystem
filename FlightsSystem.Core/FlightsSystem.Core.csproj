@@ -52,11 +52,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AirlineCompany.cs" />
+    <Compile Include="BusinessLogic\AnonymousUserFacade.cs" />
+    <Compile Include="BusinessLogic\FacadeBase.cs" />
+    <Compile Include="BusinessLogic\IAnonymousUserFacade.cs" />
+    <Compile Include="BusinessLogic\ILoggedInAdministratorFacade.cs" />
+    <Compile Include="BusinessLogic\LoggedInAdministratorFacade.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="DAL\AirlineDAOEF.cs" />
     <Compile Include="DAL\CountryDAOEF.cs" />
     <Compile Include="DAL\CustomerDAOEF.cs" />
+    <Compile Include="DAL\FlightDAOEF.cs" />
     <Compile Include="DAL\IAirlineDAO.cs" />
     <Compile Include="DAL\IBasicDB.cs" />
     <Compile Include="DAL\ICountryDAO.cs" />
@@ -68,7 +74,12 @@
     <Compile Include="DAL\FlightsSystemContext.cs" />
     <Compile Include="IPoco.cs" />
     <Compile Include="IUser.cs" />
+    <Compile Include="Login\Administrator.cs" />
     <Compile Include="Login\ILoginService.cs" />
+    <Compile Include="Login\LoginService.cs" />
+    <Compile Include="Login\LoginToken.cs" />
+    <Compile Include="Login\UserNotFoundException.cs" />
+    <Compile Include="Login\WrongPasswordException.cs" />
     <Compile Include="Migrations\202007090644340_second.cs" />
     <Compile Include="Migrations\202007090644340_second.designer.cs">
       <DependentUpon>202007090644340_second.cs</DependentUpon>

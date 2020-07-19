@@ -21,42 +21,4 @@ namespace FlightsSystem.Core.DAL
         public DbSet<Administrator> Administrators { get; set; }
 
     }
-
-    public class FlightDAOEF : IFlightDAO
-    {
-        public IList<Flight> GetAllFlightsVacancy()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Flight GetFlightById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<Flight> GetFlightsByCustomer(Customer customer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<Flight> GetFlightsByDepartureDate(DateTime departureDate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<Flight> GetFlightsByDestinationCountry(Country destinationCountry)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<Flight> GetFlightsByLandingDate(DateTime landingDate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<Flight> GetFlightsByOriginCountry(Country originCountry)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }
