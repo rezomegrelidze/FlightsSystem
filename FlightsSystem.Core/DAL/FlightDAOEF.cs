@@ -18,7 +18,7 @@ namespace FlightsSystem.Core.DAL
             return db.Flights.ToDictionary(f => f,f => f.RemainingTickets);
         }
 
-        public Flight GetFlightById(int id)
+        public Flight GetFlightById(long id)
         {
             var flight = db.Flights.SingleOrDefault(f => f.Id == id);
             if(flight == null)
@@ -27,10 +27,10 @@ namespace FlightsSystem.Core.DAL
             return flight;
         }
 
-        // Don't really know how to implement this 
         public IList<Flight> GetFlightsByCustomer(Customer customer)
         {
-            throw new NotImplementedException();
+            var tickets = db.Tickets.Where(t => t.CustomerId == customer.Id);
+            return tickets.Select(x => x.Flight).ToList();
         }
 
         public IList<Flight> GetFlightsByDepartureDate(DateTime departureDate)
@@ -53,7 +53,7 @@ namespace FlightsSystem.Core.DAL
             return db.Flights.Where(f => f.OriginCountry == originCountry).ToList();
         }
 
-        public Flight Get(int id)
+        public Flight Get(long id)
         {
             return GetFlightById(id);
         }

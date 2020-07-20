@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FlightsSystem.Core.DAL;
 
 namespace FlightsSystem.Core.Login
@@ -68,6 +69,23 @@ namespace FlightsSystem.Core.Login
                 }
             }
             throw new UserNotFoundException();
+        }
+
+        public void ChangePassword<T>(LoginToken<T> token,string oldPassword, string newPassword) where T:IUser
+        {
+            if (token is LoginToken<AirlineCompany>)
+            {
+                var airline = _airlineDAO.Get((token.User as AirlineCompany).Id);
+                if (airline.Password == oldPassword)
+                {
+                    airline.Password = newPassword;
+                    _airlineDAO.Update(airline);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Incorrect old password provided!");
+                }
+            }
         }
     }
 }

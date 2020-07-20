@@ -1,14 +1,16 @@
-﻿using FlightsSystem.Core.Login;
+﻿using System;
+using System.Diagnostics;
+using FlightsSystem.Core.Login;
 
 namespace FlightsSystem.Core.BusinessLogic
 {
     public class LoggedInAdministratorFacade : AnonymousUserFacade, ILoggedInAdministratorFacade
     {
-        private readonly LoginService service;
+        private readonly LoginService _service;
 
         public LoggedInAdministratorFacade()
         {
-            service = new LoginService(_airlineDAO, _customerDAO);
+            _service = new LoginService(_airlineDAO, _customerDAO);
         }
 
         public void CreateNewAirline(LoginToken<Administrator> token, AirlineCompany airline)
@@ -47,8 +49,7 @@ namespace FlightsSystem.Core.BusinessLogic
         }
         private bool LoggedIn(LoginToken<Administrator> token)
         {
-            
-            return service.TryAdminLogin(token.User.UserName, token.User.Password, out token);
+            return _service.TryAdminLogin(token.User.UserName, token.User.Password, out token);
         }
     }
 }

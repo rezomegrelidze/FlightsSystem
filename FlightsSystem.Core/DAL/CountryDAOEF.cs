@@ -13,7 +13,7 @@ namespace FlightsSystem.Core.DAL
             db = new FlightsSystemContext();
         }
 
-        public Country Get(int id)
+        public Country Get(long id)
         {
             var country = db.Countries.SingleOrDefault(c => c.Id == id);
             if(country == null) 

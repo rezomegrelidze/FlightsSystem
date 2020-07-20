@@ -13,7 +13,7 @@ namespace FlightsSystem.Core.DAL
             db = new FlightsSystemContext();
         }
 
-        public Ticket Get(int id)
+        public Ticket Get(long id)
         {
             var ticket = db.Tickets.SingleOrDefault(t => t.Id == id);
             if(ticket == null) throw new InvalidOperationException("Ticket with a given [id] doesn't exist");

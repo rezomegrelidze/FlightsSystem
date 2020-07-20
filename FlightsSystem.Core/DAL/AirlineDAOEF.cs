@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FlightsSystem.Core.Login;
 
 namespace FlightsSystem.Core.DAL
 {
@@ -13,7 +14,7 @@ namespace FlightsSystem.Core.DAL
             db = new FlightsSystemContext();
         }
 
-        public AirlineCompany Get(int id)
+        public AirlineCompany Get(long id)
         {
             var company = db.AirlineCompanies.SingleOrDefault(c => c.Id == id);
             if(company == null)
@@ -28,6 +29,7 @@ namespace FlightsSystem.Core.DAL
 
         public void Add(AirlineCompany t)
         {
+            t.Password = PasswordHasher.HashSHA1(t.Password);
             db.AirlineCompanies.Add(t);
             db.SaveChanges();
         }
@@ -55,7 +57,7 @@ namespace FlightsSystem.Core.DAL
                 companyToUpdate.Country = t.Country;
                 companyToUpdate.CountryCode = t.CountryCode;
                 companyToUpdate.UserName = t.UserName;
-                companyToUpdate.Password = t.Password;
+                companyToUpdate.Password = PasswordHasher.HashSHA1(t.Password);
             }
             else
             {
