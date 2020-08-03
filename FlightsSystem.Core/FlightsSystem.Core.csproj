@@ -51,7 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AirlineCompany.cs" />
+    <Compile Include="BusinessLogic\LoggedInCustomerFacade.cs" />
+    <Compile Include="BusinessLogic\PurchaseException.cs" />
+    <Compile Include="Login\LoginHelpers.cs" />
+    <Compile Include="BusinessLogic\TokenNotValidException.cs" />
+    <Compile Include="Login\UserNotFoundException.cs" />
+    <Compile Include="Models\AirlineCompany.cs" />
     <Compile Include="BusinessLogic\AnonymousUserFacade.cs" />
     <Compile Include="BusinessLogic\FacadeBase.cs" />
     <Compile Include="BusinessLogic\FlyingCenterSystem.cs" />
@@ -61,8 +66,8 @@
     <Compile Include="BusinessLogic\ILoggedInCustomerFacade.cs" />
     <Compile Include="BusinessLogic\LoggedInAdministratorFacade.cs" />
     <Compile Include="BusinessLogic\LoggedInAirlineFacade.cs" />
-    <Compile Include="Country.cs" />
-    <Compile Include="Customer.cs" />
+    <Compile Include="Models\Country.cs" />
+    <Compile Include="Models\Customer.cs" />
     <Compile Include="DAL\AdministratorDAOEF.cs" />
     <Compile Include="DAL\AirlineDAOEF.cs" />
     <Compile Include="DAL\CountryDAOEF.cs" />
@@ -76,7 +81,7 @@
     <Compile Include="DAL\IFlightDAO.cs" />
     <Compile Include="DAL\ITicketDAO.cs" />
     <Compile Include="DAL\TicketDAOEF.cs" />
-    <Compile Include="Flight.cs" />
+    <Compile Include="Models\Flight.cs" />
     <Compile Include="DAL\FlightsSystemContext.cs" />
     <Compile Include="IPoco.cs" />
     <Compile Include="IUser.cs" />
@@ -85,7 +90,6 @@
     <Compile Include="Login\LoginService.cs" />
     <Compile Include="Login\LoginToken.cs" />
     <Compile Include="Login\PasswordHasher.cs" />
-    <Compile Include="Login\UserNotFoundException.cs" />
     <Compile Include="Login\WrongPasswordException.cs" />
     <Compile Include="Migrations\202007090644340_second.cs" />
     <Compile Include="Migrations\202007090644340_second.designer.cs">
@@ -109,7 +113,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ticket.cs" />
+    <Compile Include="Models\Ticket.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

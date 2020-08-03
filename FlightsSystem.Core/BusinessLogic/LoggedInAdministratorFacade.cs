@@ -6,50 +6,63 @@ namespace FlightsSystem.Core.BusinessLogic
 {
     public class LoggedInAdministratorFacade : AnonymousUserFacade, ILoggedInAdministratorFacade
     {
-        private readonly LoginService _service;
-
-        public LoggedInAdministratorFacade()
-        {
-            _service = new LoginService(_airlineDAO, _customerDAO);
-        }
-
         public void CreateNewAirline(LoginToken<Administrator> token, AirlineCompany airline)
         {
-            if (LoggedIn(token))
+            if (token.IsTokenValid())
                 _airlineDAO.Add(airline);
+            else
+            {
+                throw new TokenNotValidException();
+            }
         }
         public void UpdateAirlineDetails(LoginToken<Administrator> token, AirlineCompany customer)
         {
-            if(LoggedIn(token))
+            if (token.IsTokenValid())
                 _airlineDAO.Update(customer);
+            else
+            {
+                throw new TokenNotValidException();
+            }
         }
 
         public void RemoveAirline(LoginToken<Administrator> token, AirlineCompany airline)
         {
-            if(LoggedIn(token))
+            if (token.IsTokenValid())
                 _airlineDAO.Remove(airline);
+            else
+            {
+                throw new TokenNotValidException();
+            }
         }
 
         public void CreateNewCustomer(LoginToken<Administrator> token, Customer customer)
         {
-            if(LoggedIn(token))
+            if (token.IsTokenValid())
                 _customerDAO.Add(customer);
+            else
+            {
+                throw new TokenNotValidException();
+            }
         }
 
         public void UpdateCustomerDetails(LoginToken<Administrator> token, Customer customer)
         {
-            if(LoggedIn(token))
+            if (token.IsTokenValid())
                 _customerDAO.Update(customer);
+            else
+            {
+                throw new TokenNotValidException();
+            }
         }
 
         public void RemoveCustomer(LoginToken<Administrator> token, Customer customer)
         {
-            if(LoggedIn(token))
+            if(token.IsTokenValid())
                 _customerDAO.Remove(customer);
-        }
-        private bool LoggedIn(LoginToken<Administrator> token)
-        {
-            return _service.TryAdminLogin(token.User.UserName, token.User.Password, out token);
+            else
+            {
+                throw new TokenNotValidException();
+            }
         }
     }
 }

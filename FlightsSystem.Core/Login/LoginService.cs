@@ -6,7 +6,7 @@ namespace FlightsSystem.Core.Login
 {
     public class LoginService : ILoginService
     {
-        private FlightsSystemContext db;
+        private FlightsSystemContext db; 
         private readonly IAirlineDAO _airlineDAO;
         private readonly ICustomerDAO _customerDAO;
 
@@ -14,7 +14,7 @@ namespace FlightsSystem.Core.Login
         {
             _airlineDAO = airlineDAO;
             _customerDAO = customerDAO;
-            db = new FlightsSystemContext();
+            db = new FlightsSystemContext(); // make DAO for LoginService ...
         }
 
         public bool TryAdminLogin(string userName, string password, out LoginToken<Administrator> token)
@@ -32,7 +32,7 @@ namespace FlightsSystem.Core.Login
                     throw new WrongPasswordException();
                 }
             }
-            throw new UserNotFoundException();
+            throw new UserNotFoundException($"username: {userName} of type administrator could not be found");
         }
 
         public bool TryCustomerLogin(string userName, string password, out LoginToken<Customer> token)
@@ -50,7 +50,7 @@ namespace FlightsSystem.Core.Login
                     throw new WrongPasswordException();
                 }
             }
-            throw new UserNotFoundException();
+            throw new UserNotFoundException($"userName: {userName} of type customer could not be found"); // make exceptions more verbose
         }
 
         public bool TryAirlineLogin(string userName, string password, out LoginToken<AirlineCompany> token)
@@ -68,7 +68,7 @@ namespace FlightsSystem.Core.Login
                     throw new WrongPasswordException();
                 }
             }
-            throw new UserNotFoundException();
+            throw new UserNotFoundException($"userName: {userName} of type airlinecompany could not be found");
         }
 
         public void ChangePassword<T>(LoginToken<T> token,string oldPassword, string newPassword) where T:IUser

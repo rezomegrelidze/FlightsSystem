@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Timers;
+using FlightsSystem.Core.Migrations;
 using Timer = System.Timers.Timer;
 
 namespace FlightsSystem.Core.BusinessLogic
 {
+    // Make configuration project 
     public sealed class FlyingCenterSystem
     {
         public static readonly FlyingCenterSystem Instance = new FlyingCenterSystem();

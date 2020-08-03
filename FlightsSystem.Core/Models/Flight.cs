@@ -5,8 +5,6 @@ namespace FlightsSystem.Core
 {
     public class Flight : IPoco
     {
-
-
         public long Id { get; set; }
         [ForeignKey("AirlineCompany")]
         public long AirlineCompanyId { get; set; }
@@ -40,6 +38,15 @@ namespace FlightsSystem.Core
         public static bool operator !=(Flight a, Flight b)
         {
             return !(a == b);
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(Id)}: {Id}, {nameof(AirlineCompanyId)}: {AirlineCompanyId}, {nameof(OriginCountryCode)}:" +
+                   $" {OriginCountryCode}, {nameof(DestinationCountryCode)}: {DestinationCountryCode}," +
+                   $" {nameof(OriginCountry)}: {OriginCountry}, {nameof(DestinationCountry)}: " +
+                   $"{DestinationCountry}, {nameof(AirlineCompany)}: {AirlineCompany}, {nameof(DepartureTime)}:" +
+                   $" {DepartureTime}, {nameof(LandingTime)}: {LandingTime}, {nameof(RemainingTickets)}: {RemainingTickets}";
         }
     }
 }

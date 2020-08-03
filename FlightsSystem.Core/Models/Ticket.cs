@@ -33,5 +33,11 @@ namespace FlightsSystem.Core
         {
             return !(a == b);
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(Id)}: {Id}, {nameof(FlightId)}: {FlightId}, {nameof(CustomerId)}:" +
+                   $" {CustomerId}, {nameof(Flight)}: {Flight}, {nameof(Customer)}: {Customer}";
+        }
     }
 }

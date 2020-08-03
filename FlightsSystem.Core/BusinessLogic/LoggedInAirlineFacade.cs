@@ -6,75 +6,85 @@ namespace FlightsSystem.Core.BusinessLogic
 {
     public class LoggedInAirlineFacade : AnonymousUserFacade, ILoggedInAirlineFacade
     {
-        private readonly LoginService _service;
-
-        public LoggedInAirlineFacade()
-        {
-            _service = new LoginService(_airlineDAO,_customerDAO);
-        }
-
         public IList<Ticket> GetAllTickets(LoginToken<AirlineCompany> token)
         {
-            if (LoggedIn(token))
+            if (token.IsTokenValid())
             {
                 return _ticketDAO.GetAll();
             }
 
-            return null;
+            throw new TokenNotValidException();
         }
 
         public IList<Flight> GetAllFlights(LoginToken<AirlineCompany> token)
         {
-            if (LoggedIn(token))
+            if (token.IsTokenValid())
             {
                 return _flightDAO.GetAll();
             }
 
-            return null;
+            throw new TokenNotValidException();
         }
 
         public void CancelFlight(LoginToken<AirlineCompany> token, Flight flight)
         {
-            if (LoggedIn(token))
+            if (token.IsTokenValid())
             {
                 _flightDAO.Remove(flight);
+            }
+            else
+            {
+                throw new TokenNotValidException();
             }
         }
 
         public void CreateFlight(LoginToken<AirlineCompany> token, Flight flight)
         {
-            if (LoggedIn(token))
+            if (token.IsTokenValid())
             {
                 _flightDAO.Add(flight);
+            }
+            else
+            {
+                throw new TokenNotValidException();
             }
         }
 
         public void UpdateFlight(LoginToken<AirlineCompany> token, Flight flight)
         {
-            if (LoggedIn(token))
+            if (token.IsTokenValid())
             {
                 _flightDAO.Update(flight);
+            }
+            else
+            {
+                throw new TokenNotValidException();
             }
         }
 
         public void ChangeMyPassword(LoginToken<AirlineCompany> token, string oldPassword, string newPassword)
         {
-            if (LoggedIn(token))
+            var service = new LoginService(_airlineDAO,_customerDAO);
+            if (token.IsTokenValid())
             {
-                _service.ChangePassword(token,oldPassword,newPassword);
+                service.ChangePassword(token,oldPassword,newPassword);
+            }
+            else
+            {
+                throw new TokenNotValidException();
             }
         }
 
         public void ModifyAirlineDetails(LoginToken<AirlineCompany> token, AirlineCompany airline)
         {
-            if (LoggedIn(token))
+            if (token.IsTokenValid())
             {
                 _airlineDAO.Update(airline);
             }
-        }
-        private bool LoggedIn(LoginToken<AirlineCompany> token)
-        {
-            return _service.TryAirlineLogin(token.User.UserName, token.User.Password, out token);
+            else
+            {
+                throw new TokenNotValidException();
+            }
         }
     }
 }

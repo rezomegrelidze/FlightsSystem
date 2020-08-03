@@ -5,6 +5,9 @@ using FlightsSystem.Core.Login;
 
 namespace FlightsSystem.Core.DAL
 {
+
+    // Make remove airline function in stored procedure
+
     public class AirlineDAOEF : IAirlineDAO
     {
         private FlightsSystemContext db;

@@ -26,5 +26,13 @@
         {
             return !(a == b);
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(Id)}: {Id}, {nameof(FirstName)}: {FirstName}, {nameof(LastName)}: {LastName}," +
+                   $" {nameof(UserName)}: {UserName}, {nameof(Password)}: {Password}," +
+                   $" {nameof(Address)}: {Address}, {nameof(PhoneNumber)}: {PhoneNumber}, " +
+                   $"{nameof(CreditCardNumber)}: {CreditCardNumber}";
+        }
     }
 }
