@@ -6,9 +6,10 @@ namespace FlightsSystem.Core.Login
 {
     public class LoginService : ILoginService
     {
-        private FlightsSystemContext db; 
+        private FlightsSystemContext db;
         private readonly IAirlineDAO _airlineDAO;
         private readonly ICustomerDAO _customerDAO;
+        private readonly IAdministratorDAO _administratorDAO;
 
         public LoginService(IAirlineDAO airlineDAO,ICustomerDAO customerDAO)
         {
@@ -19,7 +20,7 @@ namespace FlightsSystem.Core.Login
 
         public bool TryAdminLogin(string userName, string password, out LoginToken<Administrator> token)
         {
-            var admin = db.Administrators.SingleOrDefault(a => a.UserName == userName);
+            var admin = _administratorDAO.GetAll().SingleOrDefault(a => a.UserName == userName);
             if (admin != null)
             {
                 if (admin.Password == password)
@@ -37,7 +38,7 @@ namespace FlightsSystem.Core.Login
 
         public bool TryCustomerLogin(string userName, string password, out LoginToken<Customer> token)
         {
-            var customer = db.Customers.SingleOrDefault(a => a.UserName == userName);
+            var customer = _customerDAO.GetAll().SingleOrDefault(a => a.UserName == userName);
             if (customer != null)
             {
                 if (customer.Password == password)
@@ -55,7 +56,7 @@ namespace FlightsSystem.Core.Login
 
         public bool TryAirlineLogin(string userName, string password, out LoginToken<AirlineCompany> token)
         {
-            var airline = db.AirlineCompanies.SingleOrDefault(a => a.UserName == userName);
+            var airline = _airlineDAO.GetAll().SingleOrDefault(a => a.UserName == userName);
             if (airline != null)
             {
                 if (airline.Password == password)
@@ -71,11 +72,9 @@ namespace FlightsSystem.Core.Login
             throw new UserNotFoundException($"userName: {userName} of type airlinecompany could not be found");
         }
 
-        public void ChangePassword<T>(LoginToken<T> token,string oldPassword, string newPassword) where T:IUser
+        public void ChangeAirlinePassword(LoginToken<AirlineCompany> token,string oldPassword, string newPassword)
         {
-            if (token is LoginToken<AirlineCompany>)
-            {
-                var airline = _airlineDAO.Get((token.User as AirlineCompany).Id);
+                var airline = _airlineDAO.Get(token.User.Id);
                 if (airline.Password == oldPassword)
                 {
                     airline.Password = newPassword;
@@ -85,7 +84,7 @@ namespace FlightsSystem.Core.Login
                 {
                     throw new InvalidOperationException("Incorrect old password provided!");
                 }
-            }
+            
         }
     }
 }

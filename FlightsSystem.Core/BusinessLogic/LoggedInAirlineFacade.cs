@@ -67,7 +67,7 @@ namespace FlightsSystem.Core.BusinessLogic
             var service = new LoginService(_airlineDAO,_customerDAO);
             if (token.IsTokenValid())
             {
-                service.ChangePassword(token,oldPassword,newPassword);
+                service.ChangeAirlinePassword(token,oldPassword,newPassword);
             }
             else
             {
