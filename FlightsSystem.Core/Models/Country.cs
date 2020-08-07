@@ -2,13 +2,21 @@
 {
     public class Country : IPoco
     {
-        public long Id { get; set; }
-        public string CountryName { get; set; }
+        protected bool Equals(Country other)
+        {
+            return Id == other.Id;
+        }
 
         public override bool Equals(object obj)
         {
-            return obj is AirlineCompany company && this.Id == company.Id;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Country) obj);
         }
+
+        public long Id { get; set; }
+        public string CountryName { get; set; }
 
         public override int GetHashCode()
         {

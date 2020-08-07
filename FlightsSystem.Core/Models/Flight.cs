@@ -5,6 +5,19 @@ namespace FlightsSystem.Core
 {
     public class Flight : IPoco
     {
+        protected bool Equals(Flight other)
+        {
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Flight) obj);
+        }
+
         public long Id { get; set; }
         [ForeignKey("AirlineCompany")]
         public long AirlineCompanyId { get; set; }
@@ -18,12 +31,6 @@ namespace FlightsSystem.Core
         public DateTime DepartureTime { get; set; }
         public DateTime LandingTime { get; set; }
         public int RemainingTickets { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            return obj is AirlineCompany company && this.Id == company.Id;
-        }
-
         public override int GetHashCode()
         {
             return Id.GetHashCode();

@@ -85,7 +85,7 @@
     <Compile Include="DAL\FlightsSystemContext.cs" />
     <Compile Include="IPoco.cs" />
     <Compile Include="IUser.cs" />
-    <Compile Include="Login\Administrator.cs" />
+    <Compile Include="Models\Administrator.cs" />
     <Compile Include="Login\ILoginService.cs" />
     <Compile Include="Login\LoginService.cs" />
     <Compile Include="Login\LoginToken.cs" />

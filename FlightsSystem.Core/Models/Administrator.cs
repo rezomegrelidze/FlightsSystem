@@ -1,7 +1,20 @@
-﻿namespace FlightsSystem.Core.Login
+﻿namespace FlightsSystem.Core
 {
     public class Administrator : IUser, IPoco
     {
+        protected bool Equals(Administrator other)
+        {
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Administrator) obj);
+        }
+
         public long Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

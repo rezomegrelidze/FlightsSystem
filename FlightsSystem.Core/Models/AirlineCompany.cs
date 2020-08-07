@@ -4,6 +4,19 @@ namespace FlightsSystem.Core
 {
     public class AirlineCompany : IPoco,IUser
     {
+        protected bool Equals(AirlineCompany other)
+        {
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((AirlineCompany) obj);
+        }
+
         public long Id { get; set; }
         public string AirlineName { get; set; }
         public string UserName { get; set; }
@@ -14,10 +27,6 @@ namespace FlightsSystem.Core
 
         public Country Country { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            return obj is AirlineCompany company && this.Id == company.Id;
-        }
 
         public override int GetHashCode()
         {

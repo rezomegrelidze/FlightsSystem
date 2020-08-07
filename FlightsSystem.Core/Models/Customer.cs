@@ -2,6 +2,19 @@
 {
     public class Customer : IPoco, IUser
     {
+        protected bool Equals(Customer other)
+        {
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Customer) obj);
+        }
+
         public long Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
