@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlightsSystem.Core.Login
+namespace FlightsSystem.Core.Helpers
 {
     static class PasswordHasher
     {

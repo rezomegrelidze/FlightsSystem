@@ -89,7 +89,7 @@
     <Compile Include="Login\ILoginService.cs" />
     <Compile Include="Login\LoginService.cs" />
     <Compile Include="Login\LoginToken.cs" />
-    <Compile Include="Login\PasswordHasher.cs" />
+    <Compile Include="Helpers\PasswordHasher.cs" />
     <Compile Include="Login\WrongPasswordException.cs" />
     <Compile Include="Migrations\202007090644340_second.cs" />
     <Compile Include="Migrations\202007090644340_second.designer.cs">
