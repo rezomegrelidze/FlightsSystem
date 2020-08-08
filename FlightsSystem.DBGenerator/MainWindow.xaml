@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlightsSystem.DBGenerator"
         mc:Ignorable="d"
-        Title="DB Generator" Height="450" Width="600" FontSize="20" MouseWheel="ZoomInOrOutHandle">
+        Title="DB Generator" Height="450" Width="600" FontSize="18" MouseWheel="ZoomInOrOutHandle">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -35,7 +35,16 @@
                 <TextBox Grid.Row="0" Grid.Column="1" x:Name="AirlineCompanyCount"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Customers"/>
-                <TextBox Grid.Row="1" Grid.Column="1"  x:Name="CustomerCount"/>
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Min" Margin="0,0,10,0"></TextBlock>
+                        <TextBox x:Name="MinCustomerCount" MinWidth="50"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"  >
+                        <TextBlock Text="Max" Margin="10,0,10,0"></TextBlock>
+                        <TextBox x:Name="MaxCustomerCount" MinWidth="50"/>
+                    </StackPanel>
+                </StackPanel>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Administrators"/>
                 <TextBox Grid.Row="2" Grid.Column="1"  x:Name="AdministratorCount"/>
@@ -44,7 +53,16 @@
                 <TextBox Grid.Row="3"  Grid.Column="1"  x:Name="FlightCountPerCompany"/>
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Tickets Per Customer"/>
-                <TextBox Grid.Row="4" Grid.Column="1"  x:Name="TicketCountPerCustomer"/>
+                <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Min" Margin="0,0,10,0"></TextBlock>
+                        <TextBox x:Name="MinTicketsPerCustomerCount" MinWidth="50"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"  >
+                        <TextBlock Text="Max" Margin="10,0,10,0"></TextBlock>
+                        <TextBox x:Name="MaxTicketsPerCustomerCount" MinWidth="50"/>
+                    </StackPanel>
+                </StackPanel>
 
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Countries"/>
                 <TextBox Grid.Row="5" Grid.Column="1"  x:Name="CountryCount"/>
