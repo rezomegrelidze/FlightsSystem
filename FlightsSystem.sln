@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightsSystem.Core", "Fligh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightsSystem.DBGenerator", "FlightsSystem.DBGenerator\FlightsSystem.DBGenerator.csproj", "{714F4DE0-6191-4E3C-A1CA-7E450703D655}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightsSystem.WebAPI", "FlightsSystem.WebAPI\FlightsSystem.WebAPI.csproj", "{9A5FF7B8-CCA6-4BF9-8A0B-B85A657FA21A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{714F4DE0-6191-4E3C-A1CA-7E450703D655}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{714F4DE0-6191-4E3C-A1CA-7E450703D655}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{714F4DE0-6191-4E3C-A1CA-7E450703D655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A5FF7B8-CCA6-4BF9-8A0B-B85A657FA21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A5FF7B8-CCA6-4BF9-8A0B-B85A657FA21A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A5FF7B8-CCA6-4BF9-8A0B-B85A657FA21A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A5FF7B8-CCA6-4BF9-8A0B-B85A657FA21A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

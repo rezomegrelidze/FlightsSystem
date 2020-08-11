@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Timers;
 using FlightsSystem.Core.DAL;
+using FlightsSystem.Core.Login;
 using FlightsSystem.Core.Migrations;
 using Timer = System.Timers.Timer;
 
@@ -14,6 +15,8 @@ namespace FlightsSystem.Core.BusinessLogic
     public sealed class FlyingCenterSystem
     {
         public static readonly FlyingCenterSystem Instance = new FlyingCenterSystem();
+
+        public LoginService LoginService { get; } = new LoginService(new AirlineDAOEF(), new CustomerDAOEF());
 
         static readonly List<Ticket> TicketHistory = new List<Ticket>();
         static readonly List<Flight> FlightHistory = new List<Flight>();
