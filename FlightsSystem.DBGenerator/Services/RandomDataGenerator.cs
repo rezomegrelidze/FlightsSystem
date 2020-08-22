@@ -19,6 +19,21 @@ namespace FlightsSystem.DBGenerator.Services
         private IAdministratorDAO _administratorDAO;
         private ITicketDAO _ticketDAO;
         private ICountryDAO _countryDAO;
+        private double _operationProgress;
+
+        internal delegate void ProgressChanged();
+
+        public event ProgressChanged OnProgressChanged;
+
+        public double OperationProgress
+        {
+            get => _operationProgress;
+            set
+            {
+                _operationProgress = value;
+                OnProgressChanged?.Invoke();
+            }
+        }
 
         public RandomDataGenerator(RandomDataSpec randomDataSpec)
         {
@@ -38,20 +53,35 @@ namespace FlightsSystem.DBGenerator.Services
 
         public async Task AddRandomDataToDatabaseAsync()
         {
+            OperationProgress = 0;
+            double incr = 100 / 12.0; // 12 because there are 12 lines of blocking code 
+
             await Task.Run(() =>
             {
                 var airlineCompanies = GetAirlineCompanies().ToList();
+                OperationProgress += incr;
                 var customers = GetCustomers().ToList();
+                OperationProgress += incr;
                 var admins = GetAdministrators().ToList();
+                OperationProgress += incr;
                 var flights = GetFlights().ToList();
+                OperationProgress += incr;
                 var tickets = GetTickets().ToList();
+                OperationProgress += incr;
                 var countries = GetCountries().ToList();
+                OperationProgress += incr;
                 airlineCompanies.ForEach(airline => _airlineDAO.Add(airline));
+                OperationProgress += incr;
                 customers.ForEach(customer => _customerDAO.Add(customer));
+                OperationProgress += incr;
                 admins.ForEach(admin => _administratorDAO.Add(admin));
+                OperationProgress += incr;
                 flights.ForEach(flight => _flightDAO.Add(flight));
+                OperationProgress += incr;
                 tickets.ForEach(ticket => _ticketDAO.Add(ticket));
+                OperationProgress += incr;
                 countries.ForEach(country => _countryDAO.Add(country));
+                OperationProgress += incr;
             });
         }
 
@@ -87,14 +117,22 @@ namespace FlightsSystem.DBGenerator.Services
 
         public async Task ReplaceDatabaseAsync()
         {
+            OperationProgress = 0;
+            double incr = 100 / 6.0; // 6 because 6 blocking operations
             await Task.Run(() =>
             {
                 _airlineDAO.Clear();
+                OperationProgress += incr;
                 _countryDAO.Clear();
+                OperationProgress += incr;
                 _flightDAO.Clear();
+                OperationProgress += incr;
                 _administratorDAO.Clear();
+                OperationProgress += incr;
                 _ticketDAO.Clear();
+                OperationProgress += incr;
                 _customerDAO.Clear();
+                OperationProgress += incr;
             });
             await AddRandomDataToDatabaseAsync();
         }
