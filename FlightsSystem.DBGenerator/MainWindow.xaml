@@ -3,10 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FlightsSystem.DBGenerator"
+        xmlns:models="clr-namespace:FlightsSystem.DBGenerator.Models"
         mc:Ignorable="d"
         Title="DB Generator" Height="450" Width="600" FontSize="18" MouseWheel="ZoomInOrOutHandle">
-    <Grid>
+    <Window.Resources>
+        <models:RandomDataSpec x:Key="RandomDataSpec"/>
+    </Window.Resources>
+    <Grid x:Name="MainGrid" DataContext="{StaticResource RandomDataSpec}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -38,34 +41,34 @@
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Min" Margin="0,0,10,0"></TextBlock>
-                        <TextBox x:Name="MinCustomerCount" MinWidth="50"/>
+                        <TextBox x:Name="MinCustomerCount" Text="{Binding MinCustomerCount}" MinWidth="50"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"  >
                         <TextBlock Text="Max" Margin="10,0,10,0"></TextBlock>
-                        <TextBox x:Name="MaxCustomerCount" MinWidth="50"/>
+                        <TextBox x:Name="MaxCustomerCount" Text="{Binding MaxCustomerCount}" MinWidth="50"/>
                     </StackPanel>
                 </StackPanel>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Administrators"/>
-                <TextBox Grid.Row="2" Grid.Column="1"  x:Name="AdministratorCount"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AdministratorCount}"  x:Name="AdministratorCount"/>
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Flights Per Company"/>
-                <TextBox Grid.Row="3"  Grid.Column="1"  x:Name="FlightCountPerCompany"/>
+                <TextBox Grid.Row="3"  Grid.Column="1" Text="{Binding FlightCountPerCompany}"  x:Name="FlightCountPerCompany"/>
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Tickets Per Customer"/>
                 <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Min" Margin="0,0,10,0"></TextBlock>
-                        <TextBox x:Name="MinTicketsPerCustomerCount" MinWidth="50"/>
+                        <TextBox x:Name="MinTicketsPerCustomerCount" Text="{Binding MinTicketPerCustomer}" MinWidth="50"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"  >
                         <TextBlock Text="Max" Margin="10,0,10,0"></TextBlock>
-                        <TextBox x:Name="MaxTicketsPerCustomerCount" MinWidth="50"/>
+                        <TextBox x:Name="MaxTicketsPerCustomerCount" Text="{Binding MaxTicketPerCustomer}" MinWidth="50"/>
                     </StackPanel>
                 </StackPanel>
 
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Countries"/>
-                <TextBox Grid.Row="5" Grid.Column="1"  x:Name="CountryCount"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CountryCount}"  x:Name="CountryCount"/>
 
             </Grid>
 

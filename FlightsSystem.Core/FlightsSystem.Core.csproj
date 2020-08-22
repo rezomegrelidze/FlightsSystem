@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="BusinessLogic\LoggedInCustomerFacade.cs" />
     <Compile Include="BusinessLogic\PurchaseException.cs" />
+    <Compile Include="Helpers\DatabaseExtensions.cs" />
     <Compile Include="Login\LoginHelpers.cs" />
     <Compile Include="BusinessLogic\TokenNotValidException.cs" />
     <Compile Include="Login\UserNotFoundException.cs" />

@@ -61,6 +61,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\User.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Services\RandomDataGenerator.cs" />
+    <Compile Include="Models\RandomDataSpec.cs" />
     <Compile Include="Services\AirlineService.cs" />
     <Compile Include="Services\CountryService.cs" />
     <Compile Include="Services\RandomUserService.cs" />
