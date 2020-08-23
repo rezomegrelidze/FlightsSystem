@@ -18,20 +18,20 @@ namespace FlightsSystem.DBGenerator.Services
             return ParseUser(json["results"].First);
         }
 
-        private User ParseUser(JToken userJson)
+        private User ParseUser(dynamic json)
         {
             return new User()
             {
-                Name = $"{userJson["name"]["title"]} " +
-                       $"{userJson["name"]["first"]} " +
-                       $"{userJson["name"]["last"]}",
-                Email = $"{userJson["email"]}",
-                Username = $"{userJson["login"]["username"]}",
-                Password = $"{userJson["login"]["password"]}",
-                Country = $"{userJson["location"]["country"]}",
-                Gender = $"{userJson["gender"]}",
-                Phone = $"{userJson["phone"]}",
-                PictureUrl = $"{userJson["picture"]["thumbnail"]}"
+                Name = $"{json.name.title} " +
+                       $"{json.name.first} " +
+                       $"{json.name.last}",
+                Email = $"{json.email}",
+                Username = $"{json.login.username}",
+                Password = $"{json.login.password}",
+                Country = $"{json.location.country}",
+                Gender = $"{json.gender}",
+                Phone = $"{json.phone}",
+                PictureUrl = $"{json.picture.thumbnail}"
             };
         }
     }

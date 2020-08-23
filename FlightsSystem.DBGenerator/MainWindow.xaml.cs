@@ -35,13 +35,23 @@ namespace FlightsSystem.DBGenerator
         private async void AddToDB(object sender, RoutedEventArgs e)
         {
             var randomDataGenerator = new RandomDataGenerator(MainGrid.DataContext as RandomDataSpec);
+            randomDataGenerator.OnProgressChanged += () =>
+                {
+                    ProgressBar.Value = randomDataGenerator.OperationProgress;
+                };
             await randomDataGenerator.AddRandomDataToDatabaseAsync();
+            ProgressBar.Value = 0;
         }
 
         private async void ReplaceDB(object sender, RoutedEventArgs e)
         {
             var randomDataGenerator = new RandomDataGenerator(MainGrid.DataContext as RandomDataSpec);
+            randomDataGenerator.OnProgressChanged += () =>
+            {
+                ProgressBar.Value = randomDataGenerator.OperationProgress;
+            };
             await randomDataGenerator.ReplaceDatabaseAsync();
+            ProgressBar.Value = 0; // reset progress bar
         }
     }
 }
