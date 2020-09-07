@@ -14,7 +14,7 @@ namespace FlightsSystem.DBGenerator.Services
         public async Task<User> GetRandomUser()
         {
             var json = JObject.Parse(await new HttpClient()
-                              .GetStringAsync(apiUrl));
+                .GetStringAsync(apiUrl));
             return ParseUser(json["results"].First);
         }
 
@@ -25,13 +25,20 @@ namespace FlightsSystem.DBGenerator.Services
                 Name = $"{json.name.title} " +
                        $"{json.name.first} " +
                        $"{json.name.last}",
+                FirstName = $"{json.name.first}",
+                LastName = $"{json.name.last}",
                 Email = $"{json.email}",
                 Username = $"{json.login.username}",
                 Password = $"{json.login.password}",
                 Country = $"{json.location.country}",
                 Gender = $"{json.gender}",
                 Phone = $"{json.phone}",
-                PictureUrl = $"{json.picture.thumbnail}"
+                PictureUrl = $"{json.picture.thumbnail}",
+                Address =
+                    $"{json.location.state}," +
+                    $"{json.location.city}," +
+                    $"{json.location.street.name}" +
+                    $"{json.location.street.number}"
             };
         }
     }

@@ -27,7 +27,15 @@ namespace FlightsSystem.DBGenerator.Services
 			if(country == null) throw new InvalidOperationException($"Country {countryName} doesn't exist");
             return country["flag"].ToString();
         }
-    }
+
+        public async Task<string> GetCountryAlpha2Code(string countryName)
+        {
+            var jsonArray = JArray.Parse(await new HttpClient().GetStringAsync(apiUrl));
+            var country = jsonArray.SingleOrDefault(c => c["name"].ToString().ToLower() == countryName.ToLower());
+            if (country == null) throw new InvalidOperationException($"Country {countryName} doesn't exist");
+            return country["alpha2Code"].ToString();
+        }
+	}
 	// country json object example:
 	/*
      *{

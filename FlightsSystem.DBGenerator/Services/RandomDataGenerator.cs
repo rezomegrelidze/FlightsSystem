@@ -56,19 +56,19 @@ namespace FlightsSystem.DBGenerator.Services
             OperationProgress = 0;
             double incr = 100 / 12.0; // 12 because there are 12 lines of blocking code 
 
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
-                var airlineCompanies = GetAirlineCompanies().ToList();
+                var airlineCompanies = (await GetAirlineCompanies()).ToList();
                 OperationProgress += incr;
-                var customers = GetCustomers().ToList();
+                var customers = (await GetCustomers()).ToList();
                 OperationProgress += incr;
-                var admins = GetAdministrators().ToList();
+                var admins = (await GetAdministrators()).ToList();
                 OperationProgress += incr;
                 var flights = GetFlights().ToList();
                 OperationProgress += incr;
                 var tickets = GetTickets().ToList();
                 OperationProgress += incr;
-                var countries = GetCountries().ToList();
+                var countries = (await GetCountries()).ToList();
                 OperationProgress += incr;
                 airlineCompanies.ForEach(airline => _airlineDAO.Add(airline));
                 OperationProgress += incr;
@@ -85,13 +85,24 @@ namespace FlightsSystem.DBGenerator.Services
             });
         }
 
-        private IEnumerable<Country> GetCountries()
+        private async Task<IEnumerable<Country>> GetCountries()
         {
-            throw new NotImplementedException();
+            var random = new Random();
+            var service = new CountryService();
+            return (await service.GetAllCountries()).OrderBy(_ => random.Next());
         }
 
         private IEnumerable<Ticket> GetTickets()
         {
+            var rand = new Random();
+            var numTickets = rand.Next(_randomDataSpec.MinTicketPerCustomer, _randomDataSpec.MaxTicketPerCustomer);
+            for (int i = 0; i < numTickets; i++)
+            {
+                var ticket = new Ticket()
+                {
+
+                };
+            }
             throw new NotImplementedException();
         }
 
@@ -100,19 +111,85 @@ namespace FlightsSystem.DBGenerator.Services
             throw new NotImplementedException();
         }
 
-        private IEnumerable<Administrator> GetAdministrators()
+        private async Task<IEnumerable<Administrator>> GetAdministrators()
         {
-            throw new NotImplementedException();
+            var admins = new List<Administrator>();
+            var randomUserService = new RandomUserService();
+            for (int i = 0; i < _randomDataSpec.AdministratorCount; i++)
+            {
+                var user = await randomUserService.GetRandomUser();
+                var admin = new Administrator()
+                {
+                    Address = user.Address,
+                    Password = user.Password,
+                    Id = i,
+                    UserName = user.Username,
+                    PhoneNumber = user.Phone,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                };
+                admins.Add(admin);
+            }
+            return admins;
         }
 
-        private IEnumerable<Customer> GetCustomers()
+        private async Task<IEnumerable<Customer>> GetCustomers()
         {
-            throw new NotImplementedException();
+            var customers = new List<Customer>();
+            var customerCount = new Random().Next(_randomDataSpec.MinCustomerCount,_randomDataSpec.MaxCustomerCount);
+            var randomUserService = new RandomUserService();
+            for (int i = 0; i < customerCount; i++)
+            {
+                var user = await randomUserService.GetRandomUser();
+                var customer = new Customer
+                {
+                    Address = user.Address,
+                    Password = user.Password,
+                    Id = i,
+                    UserName = user.Username,
+                    PhoneNumber = user.Phone,
+                    CreditCardNumber = GetRandomCreditCardNumber(),
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                };
+                customers.Add(customer);
+            }
+            return customers;
         }
 
-        private IEnumerable<AirlineCompany> GetAirlineCompanies()
+        private string GetRandomCreditCardNumber()
         {
-            throw new NotImplementedException();
+            var random = new Random();
+            return string.Join("", Enumerable.Range(1, 14).Select(x => random.Next(0, 10).ToString()));
+        }
+
+        private async Task<IEnumerable<AirlineCompany>> GetAirlineCompanies()
+        {
+            var rand = new Random();
+            var randomUserService = new RandomUserService();
+            var countryService = new CountryService();
+            var countries = await countryService.GetAllCountries();
+            var airlineService = new AirlineService();
+            var airlineCompanyCount = _randomDataSpec.AirlineCompanyCount;
+            var airlineNames = (await airlineService.GetAirlineNames())
+                .OrderBy(x => rand.Next()).Take(airlineCompanyCount);
+            var airlines = new List<AirlineCompany>();
+            int id = 0;
+            foreach (var airlineName in airlineNames)
+            {
+                var randomUser = await randomUserService.GetRandomUser();
+                var airline = new AirlineCompany
+                {
+                    AirlineName = airlineName,
+                    Password = randomUser.Password,
+                    Country = countries.OrderBy(x => rand.Next()).Single()
+                };
+                airline.CountryCode = airline.Country.Id;
+                airline.Id = id++;
+                airlines.Add(airline);
+            }
+
+            return airlines;
         }
 
         public async Task ReplaceDatabaseAsync()
