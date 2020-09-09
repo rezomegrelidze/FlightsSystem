@@ -11,7 +11,7 @@ namespace FlightsSystem.Core.DAL
     {
         public FlightsSystemContext() : base("FlightsSystem")
         {
-            
+            Database.CreateIfNotExists();
         }
 
         public DbSet<AirlineCompany> AirlineCompanies { get; set; }

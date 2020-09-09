@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="clr-namespace:FlightsSystem.DBGenerator.Models"
         mc:Ignorable="d"
-        Title="DB Generator" Height="450" Width="600" FontSize="18" MouseWheel="ZoomInOrOutHandle">
+        Title="DB Generator" Height="450" Width="600" FontSize="18" MouseWheel="ZoomInOrOutHandle"
+        x:Name="Window">
     <Window.Resources>
         <models:RandomDataSpec x:Key="RandomDataSpec"/>
     </Window.Resources>
@@ -35,7 +36,8 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock  Text="Airline Companies"/>
-                <TextBox Grid.Row="0" Grid.Column="1" x:Name="AirlineCompanyCount"/>
+                <TextBox Grid.Row="0" Grid.Column="1" x:Name="AirlineCompanyCount"
+                         Text="{Binding AirlineCompanyCount}"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Customers"/>
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">

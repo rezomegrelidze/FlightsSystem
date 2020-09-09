@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using FlightsSystem.Core;
 using FlightsSystem.Core.DAL;
@@ -13,6 +15,7 @@ namespace FlightsSystem.DBGenerator.Services
     internal class RandomDataGenerator
     {
         private readonly RandomDataSpec _randomDataSpec;
+        private readonly ObservableCollection<string> _logList;
         private IAirlineDAO _airlineDAO;
         private ICustomerDAO _customerDAO;
         private IFlightDAO _flightDAO;
@@ -35,9 +38,10 @@ namespace FlightsSystem.DBGenerator.Services
             }
         }
 
-        public RandomDataGenerator(RandomDataSpec randomDataSpec)
+        public RandomDataGenerator(RandomDataSpec randomDataSpec, ObservableCollection<string> logList)
         {
             _randomDataSpec = randomDataSpec;
+            _logList = logList;
             InitializeDAOs();
         }
 
@@ -56,33 +60,44 @@ namespace FlightsSystem.DBGenerator.Services
             OperationProgress = 0;
             double incr = 100 / 12.0; // 12 because there are 12 lines of blocking code 
 
-            await Task.Run(async () =>
-            {
-                var airlineCompanies = (await GetAirlineCompanies()).ToList();
-                OperationProgress += incr;
-                var customers = (await GetCustomers()).ToList();
-                OperationProgress += incr;
-                var admins = (await GetAdministrators()).ToList();
-                OperationProgress += incr;
-                var flights = GetFlights().ToList();
-                OperationProgress += incr;
-                var tickets = GetTickets().ToList();
-                OperationProgress += incr;
-                var countries = (await GetCountries()).ToList();
-                OperationProgress += incr;
-                airlineCompanies.ForEach(airline => _airlineDAO.Add(airline));
-                OperationProgress += incr;
-                customers.ForEach(customer => _customerDAO.Add(customer));
-                OperationProgress += incr;
-                admins.ForEach(admin => _administratorDAO.Add(admin));
-                OperationProgress += incr;
-                flights.ForEach(flight => _flightDAO.Add(flight));
-                OperationProgress += incr;
-                tickets.ForEach(ticket => _ticketDAO.Add(ticket));
-                OperationProgress += incr;
-                countries.ForEach(country => _countryDAO.Add(country));
-                OperationProgress += incr;
-            });
+            var airlineCompanies = (await GetAirlineCompanies()).ToList();
+            OperationProgress += incr;
+            airlineCompanies.ForEach(airline => _airlineDAO.Add(airline));
+
+            _logList.Add("Airline companies added successfully!");
+            OperationProgress += incr;
+            var countries = (await GetCountries()).ToList();
+            OperationProgress += incr;
+            countries.ForEach(country => _countryDAO.Add(country));
+
+            _logList.Add("Countries added successfully!");
+            OperationProgress += incr;
+            var customers = (await GetCustomers()).ToList();
+            OperationProgress += incr;
+            customers.ForEach(customer => _customerDAO.Add(customer));
+
+            _logList.Add("Customers added successfully!");
+            OperationProgress += incr;
+            var admins = (await GetAdministrators()).ToList();
+            OperationProgress += incr;
+            admins.ForEach(admin => _administratorDAO.Add(admin));
+
+            _logList.Add("Administrators added successfully!");
+            OperationProgress += incr;
+            var flights = GetFlights(airlineCompanies, countries).ToList();
+            OperationProgress += incr;
+            flights.ForEach(flight => _flightDAO.Add(flight));
+
+            _logList.Add("Flights added successfully!");
+            OperationProgress += incr;
+            var tickets = GetTickets(customers, flights).ToList();
+            OperationProgress += incr;
+            tickets.ForEach(ticket => _ticketDAO.Add(ticket));
+            OperationProgress += incr;
+
+            _logList.Add("Tickets added successfully!");
+
+            _logList.Add("Added data successfully");
         }
 
         private async Task<IEnumerable<Country>> GetCountries()
@@ -92,23 +107,54 @@ namespace FlightsSystem.DBGenerator.Services
             return (await service.GetAllCountries()).OrderBy(_ => random.Next());
         }
 
-        private IEnumerable<Ticket> GetTickets()
+        private IEnumerable<Ticket> GetTickets(List<Customer> customers,List<Flight> flights)
         {
             var rand = new Random();
-            var numTickets = rand.Next(_randomDataSpec.MinTicketPerCustomer, _randomDataSpec.MaxTicketPerCustomer);
-            for (int i = 0; i < numTickets; i++)
+            
+            foreach(var customer in customers)
             {
-                var ticket = new Ticket()
+                var ticketsPerCustomer = rand.Next(_randomDataSpec.MinTicketPerCustomer, _randomDataSpec.MaxTicketPerCustomer);
+                for (int i = 0; i < ticketsPerCustomer; i++)
                 {
-
-                };
+                    var flight = flights.OrderBy(x => rand.Next()).First();
+                    var ticket = new Ticket
+                    {
+                        Customer = customer,
+                        CustomerId = customer.Id,
+                        Flight = flight,
+                        FlightId = flight.Id
+                    };
+                    yield return ticket;
+                }
             }
-            throw new NotImplementedException();
         }
 
-        private IEnumerable<Flight> GetFlights()
+        private IEnumerable<Flight> GetFlights(List<AirlineCompany> airlineCompanies,List<Country> countries)
         {
-            throw new NotImplementedException();
+            var rand = new Random();
+            var numFlights = _randomDataSpec.FlightCountPerCompany;
+            foreach (var airlineCompany in airlineCompanies)
+            {
+                for (int i = 0; i < numFlights; i++)
+                {
+                    var flight = new Flight
+                    {
+                        AirlineCompany = airlineCompany,
+                        AirlineCompanyId = airlineCompany.Id,
+                        DepartureTime = Helpers.GetRandomDateTime()
+                    };
+                    flight.LandingTime = flight.DepartureTime.AddHours(rand.Next(24)); // add max 24 hours of random travel time
+                    flight.OriginCountry = countries.OrderBy(x => rand.Next()).First();
+                    flight.DestinationCountry = countries
+                        .OrderBy(x => x.GetHashCode()).First(x => x.CountryName != flight.OriginCountry.CountryName);
+                    flight.DestinationCountry = countries.OrderBy(x => rand.Next())
+                        .First(x => x.CountryName != flight.OriginCountry.CountryName);
+                    flight.OriginCountryCode = flight.OriginCountry.Id;
+                    flight.DestinationCountryCode = flight.DestinationCountry.Id;
+                    flight.RemainingTickets = rand.Next(300, 500);
+                    yield return flight;
+                }
+            }
         }
 
         private async Task<IEnumerable<Administrator>> GetAdministrators()
@@ -122,7 +168,6 @@ namespace FlightsSystem.DBGenerator.Services
                 {
                     Address = user.Address,
                     Password = user.Password,
-                    Id = i,
                     UserName = user.Username,
                     PhoneNumber = user.Phone,
                     FirstName = user.FirstName,
@@ -145,7 +190,6 @@ namespace FlightsSystem.DBGenerator.Services
                 {
                     Address = user.Address,
                     Password = user.Password,
-                    Id = i,
                     UserName = user.Username,
                     PhoneNumber = user.Phone,
                     CreditCardNumber = GetRandomCreditCardNumber(),
@@ -174,7 +218,6 @@ namespace FlightsSystem.DBGenerator.Services
             var airlineNames = (await airlineService.GetAirlineNames())
                 .OrderBy(x => rand.Next()).Take(airlineCompanyCount);
             var airlines = new List<AirlineCompany>();
-            int id = 0;
             foreach (var airlineName in airlineNames)
             {
                 var randomUser = await randomUserService.GetRandomUser();
@@ -182,10 +225,9 @@ namespace FlightsSystem.DBGenerator.Services
                 {
                     AirlineName = airlineName,
                     Password = randomUser.Password,
-                    Country = countries.OrderBy(x => rand.Next()).Single()
+                    Country = countries.OrderBy(x => rand.Next()).First()
                 };
                 airline.CountryCode = airline.Country.Id;
-                airline.Id = id++;
                 airlines.Add(airline);
             }
 
@@ -211,6 +253,7 @@ namespace FlightsSystem.DBGenerator.Services
                 _customerDAO.Clear();
                 OperationProgress += incr;
             });
+            _logList.Add("Database cleared from data!");
             await AddRandomDataToDatabaseAsync();
         }
     }

@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,9 +21,13 @@ namespace FlightsSystem.DBGenerator
     /// </summary>
     public partial class MainWindow : Window
     {
+        public ObservableCollection<string> LogList;
+
         public MainWindow()
         {
             InitializeComponent();
+            LogList = new ObservableCollection<string>();
+            LoggingListBox.ItemsSource = LogList;
         }
 
         private void ZoomInOrOutHandle(object sender, MouseWheelEventArgs e)
@@ -34,18 +41,26 @@ namespace FlightsSystem.DBGenerator
 
         private async void AddToDB(object sender, RoutedEventArgs e)
         {
-            var randomDataGenerator = new RandomDataGenerator(MainGrid.DataContext as RandomDataSpec);
+            var randomDataGenerator = new RandomDataGenerator(MainGrid.DataContext as RandomDataSpec,
+                LogList);
             randomDataGenerator.OnProgressChanged += () =>
                 {
                     ProgressBar.Value = randomDataGenerator.OperationProgress;
+                    if (Convert.ToInt32(ProgressBar.Value) == 100)
+                    {
+                        MessageBox.Show("finished!!");
+                    }
                 };
-            await randomDataGenerator.AddRandomDataToDatabaseAsync();
+
+            await Dispatcher.InvokeAsync(
+                async () => await randomDataGenerator.AddRandomDataToDatabaseAsync());
             ProgressBar.Value = 0;
         }
 
         private async void ReplaceDB(object sender, RoutedEventArgs e)
         {
-            var randomDataGenerator = new RandomDataGenerator(MainGrid.DataContext as RandomDataSpec);
+            var randomDataGenerator = new RandomDataGenerator(MainGrid.DataContext as RandomDataSpec,
+                LogList);
             randomDataGenerator.OnProgressChanged += () =>
             {
                 ProgressBar.Value = randomDataGenerator.OperationProgress;
